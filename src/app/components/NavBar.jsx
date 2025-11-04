@@ -10,7 +10,7 @@ export default function NavBar() {
         <div className="flex justify-between items-center bg-[#F9F8F6] h-20 px-14 border-b border-[#E7E2DD]">
             <div className="flex items-center text-[#3B332B] gap-1">
                 <Library size={36} />
-                <h1 className="text-4xl font-bold text-[#3B332B]">unread</h1>
+                <h1 className="text-4xl font-bold text-[#3B332B]"><a href="/">unread</a></h1>
             </div>
             <nav>
                 <ul className="flex gap-8 items-center text-[#3B332B] text-lg font-medium">
