@@ -13,7 +13,7 @@ export default function Home() {
     <div>
       <NavBar></NavBar>
 
-      <div className="flex flex-col items-center justify-center min-h-screen gap-12">
+      <div className="flex flex-col items-center justify-center min-h-screen gap-12 p-8">
        {searchResult.length === 0 && ( 
         <>
           <h1 className="text-9xl font-bold">unread</h1>

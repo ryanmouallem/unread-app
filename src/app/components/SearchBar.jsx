@@ -13,7 +13,11 @@ export default function SearchBar({ searchResult, setSearchResult}) {
         const response = await fetch(`https://openlibrary.org/search.json?q=${search}`)
         const data = await response.json();
 
-        setSearchResult(data.docs);
+        const filtered = data.docs.filter(book => 
+          book.cover_i && 
+          book.edition_count > 2
+        );
+        setSearchResult(filtered);
         console.log(data);
     }
 
@@ -38,7 +42,7 @@ export default function SearchBar({ searchResult, setSearchResult}) {
             {searchResult.map((book) => (
                 <BookCard key={book.key} book={book}/>
                 ))}
-        </div>
+      </div>
       </>
     )
 }
