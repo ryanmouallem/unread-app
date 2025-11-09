@@ -20,6 +20,31 @@ export default function Modal({ closeModal }) {
     };
   }, [closeModal]);
 
+  function trapFocus(e) {
+    if (e.key !== 'Tab') return;
+    const root = dialogRef.current;
+    if (!root) return;
+    const focusables = root.querySelectorAll(
+      'a, button, textarea, input, select, [tabindex]:not([tabindex="-1"])'
+    );
+    const list = Array.from(focusables).filter((el) => !el.hasAttribute('disabled'));
+    if (list.length === 0) return;
+    const first = list[0];
+    const last = list[list.length - 1];
+    const active = document.activeElement;
+    if (e.shiftKey) {
+      if (active === first) {
+        e.preventDefault();
+        last.focus();
+      }
+    } else {
+      if (active === last) {
+        e.preventDefault();
+        first.focus();
+      }
+    }
+  }
+
   return (
     <div
       className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm px-4"
@@ -32,6 +57,7 @@ export default function Modal({ closeModal }) {
         ref={dialogRef}
         className="relative w-[min(92vw,36rem)] max-h-[85vh] overflow-y-auto rounded-2xl bg-[#F4F3ED] p-6 shadow-xl ring-1 ring-black/5"
         onClick={(e) => e.stopPropagation()}
+        onKeyDown={trapFocus}
       >
         <button
           aria-label="Close"

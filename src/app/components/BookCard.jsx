@@ -2,9 +2,9 @@
 
 import { useState } from "react";
 import Image from "next/image";
-import { Bookmark } from "lucide-react";
+import { Bookmark, Trash2 } from "lucide-react";
 
-export default function BookCard({ book }) {
+export default function BookCard({ book, variant = "search", onAdd, isSaved, onRemove, itemId }) {
   const [loaded, setLoaded] = useState(false);
   const author = Array.isArray(book.author_name)
     ? book.author_name.join(", ")
@@ -33,10 +33,27 @@ export default function BookCard({ book }) {
         <p className="opacity-[0.75]">Released: {book.first_publish_year}</p>
       </div>
 
-      <div className="mt-auto px-3 pb-3">
-        <button className="flex w-full items-center justify-center gap-2 rounded-sm bg-[#81A282] py-2 px-4 text-white drop-shadow-sm hover:bg-[#95A282] focus-visible:outline focus-visible:outline-2 focus-visible:outline-[#81A282]">
-          <Bookmark /> Add to My Bookshelf
-        </button>
+      <div className="mt-auto px-3 pb-3 flex justify-center">
+        {variant === "bookshelf" ? (
+          <button
+            className="flex w-full items-center justify-center gap-2 rounded-sm border border-[#E7E2DD] bg-white py-2 px-4 text-[#493F37] drop-shadow-sm hover:bg-[#F9F8F6] focus-visible:outline focus-visible:outline-2 focus-visible:outline-[#81A282]"
+            onClick={() => onRemove?.(itemId)}
+          >
+            <Trash2 /> Remove from Bookshelf
+          </button>
+        ) : (
+          <button
+            disabled={isSaved}
+            className={`flex items-center justify-center gap-2 rounded-sm py-2 px-9 drop-shadow-sm whitespace-nowrap focus-visible:outline focus-visible:outline-2 focus-visible:outline-[#81A282] ${
+              isSaved
+                ? "cursor-not-allowed bg-[#E7E2DD] text-[#493F37]/70"
+                : "bg-[#81A282] text-white hover:bg-[#95A282]"
+            }`}
+            onClick={() => onAdd?.(book)}
+          >
+            <Bookmark /> {isSaved ? "Saved" : "Add to My Bookshelf"}
+          </button>
+        )}
       </div>
     </div>
   );

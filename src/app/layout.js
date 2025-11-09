@@ -1,6 +1,18 @@
 import { Onest, Playfair_Display } from "next/font/google";
 import "./globals.css";
 
+export const metadata = {
+  title: "unread",
+  description: "Discover books and build your personal bookshelf.",
+  openGraph: {
+    title: "unread",
+    description: "Discover books and build your personal bookshelf.",
+    url: "https://example.com",
+    siteName: "unread",
+    type: "website",
+  },
+};
+
 const playfairDisplay = Playfair_Display({
   variable: "--font-playfair",
   subsets: ["latin"]
