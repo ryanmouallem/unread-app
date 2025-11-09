@@ -3,15 +3,26 @@
 import { useState } from "react";
 import NavBar from "./components/NavBar";
 import SearchBar from "./components/SearchBar";
+import Modal from "./components/Modal";
 
 
 export default function Home() {
 
   const [searchResult, setSearchResult] = useState([]);
+  const [isModalOpen, setIsModalOpen] = useState(false);
   
+  function openModal() {
+    setIsModalOpen(true);
+    console.log("Modal opened!")
+  }
+
+  function closeModal() {
+    setIsModalOpen(false);
+  }
+
   return (
     <div>
-      <NavBar></NavBar>
+      <NavBar openModal={openModal}></NavBar>
 
       <div className="flex flex-col items-center justify-center min-h-screen gap-12 p-8">
        {searchResult.length === 0 && ( 
@@ -22,6 +33,7 @@ export default function Home() {
 
         <SearchBar searchResult={searchResult} setSearchResult={setSearchResult}/>
       </div>
+      {isModalOpen && <Modal closeModal={closeModal}/>}
     </div>
   )
 }
