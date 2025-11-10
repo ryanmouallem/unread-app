@@ -16,18 +16,33 @@ const getSiteUrl = () => {
   return siteUrl || 'http://localhost:3000'
 }
 
-export async function login(formData) {
+export async function login(prevState, formData) {
   const supabase = await createClient()
 
-  const data = {
-    email: formData.get('email'),
-    password: formData.get('password'),
+  const email = formData?.get?.('email')
+  const password = formData?.get?.('password')
+
+  if (!email || !password) {
+    return { error: 'Email and password are required.', suggestSignup: false }
   }
 
-  const { error } = await supabase.auth.signInWithPassword(data)
+  const { error } = await supabase.auth.signInWithPassword({
+    email,
+    password,
+  })
 
   if (error) {
-    redirect('/error')
+    const message = error.message || 'Unable to sign in. Please try again.'
+    const normalized = message.toLowerCase()
+    const suggestSignup =
+      normalized.includes('invalid login credentials') || normalized.includes('user not found')
+
+    return {
+      error: suggestSignup
+        ? "We couldn't find an account with those details. Double-check your info or create an account below."
+        : message,
+      suggestSignup,
+    }
   }
 
   revalidatePath('/', 'layout')

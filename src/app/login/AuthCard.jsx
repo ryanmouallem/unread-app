@@ -6,15 +6,18 @@ import { useFormState } from 'react-dom'
 import { login, signup } from './actions'
 
 const initialSignupState = { success: false, error: null, alreadyRegistered: false }
+const initialLoginState = { error: null, suggestSignup: false }
 
 export default function AuthCard({ className = '', emailFieldRef, headingId }) {
   const [mode, setMode] = useState('login')
   const [showModal, setShowModal] = useState(false)
   const [localError, setLocalError] = useState(null)
   const [signinPrompt, setSigninPrompt] = useState(null)
+  const [loginNotice, setLoginNotice] = useState(null)
   const signupFormRef = useRef(null)
 
   const [signupState, signupAction] = useFormState(signup, initialSignupState)
+  const [loginState, loginAction] = useFormState(login, initialLoginState)
 
   useEffect(() => {
     if (signupState?.success) {
@@ -31,6 +34,14 @@ export default function AuthCard({ className = '', emailFieldRef, headingId }) {
       )
     }
   }, [signupState])
+
+  useEffect(() => {
+    if (loginState?.error) {
+      setLoginNotice(loginState)
+    } else {
+      setLoginNotice(null)
+    }
+  }, [loginState])
 
   useEffect(() => {
     if (emailFieldRef?.current) {
@@ -77,7 +88,7 @@ export default function AuthCard({ className = '', emailFieldRef, headingId }) {
 
         {mode === 'login' ? (
           <>
-            <form className="mt-6 space-y-4" action={login}>
+            <form className="mt-6 space-y-4" action={loginAction}>
               <AuthField
                 id="login-email"
                 label="Email"
@@ -93,10 +104,33 @@ export default function AuthCard({ className = '', emailFieldRef, headingId }) {
                 </button>
               </div>
             </form>
-            {signinPrompt && (
-              <p className="mt-4 rounded-lg border border-amber-200 bg-amber-50 px-3 py-2 text-sm text-[#7A4F35]">
-                {signinPrompt}
-              </p>
+            {(signinPrompt || loginNotice?.error) && (
+              <div className="mt-4 space-y-3">
+                {signinPrompt && (
+                  <p className="rounded-lg border border-amber-200 bg-amber-50 px-3 py-2 text-sm text-[#7A4F35]">
+                    {signinPrompt}
+                  </p>
+                )}
+                {loginNotice?.error && (
+                  <div className="rounded-lg border border-red-200 bg-red-50 px-3 py-3 text-sm text-red-700">
+                    <p>{loginNotice.error}</p>
+                    {loginNotice.suggestSignup && (
+                      <button
+                        type="button"
+                        className="mt-3 inline-flex items-center gap-1 text-[#3B332B] underline-offset-4 hover:underline"
+                        onClick={() => {
+                          setMode('signup')
+                          setSigninPrompt(null)
+                          setLoginNotice(null)
+                        }}
+                      >
+                        Create an account
+                        <span aria-hidden="true">→</span>
+                      </button>
+                    )}
+                  </div>
+                )}
+              </div>
             )}
           </>
         ) : (
@@ -143,6 +177,7 @@ export default function AuthCard({ className = '', emailFieldRef, headingId }) {
               setLocalError(null)
               if (nextMode === 'signup') {
                 setSigninPrompt(null)
+                setLoginNotice(null)
               }
             }}
           >
