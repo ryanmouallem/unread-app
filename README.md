@@ -1,6 +1,6 @@
 # unread – Personal Bookshelf Web App
 
-Live Demo: https://unread-app.vercel.app
+Live Demo: https://unread-app-beta.vercel.app
 
 ## Project Overview
 unread is a web app for discovering books and saving them to a personal bookshelf. It integrates the Open Library API for search and Supabase for authentication and storage. The interface is built with Next.js and Tailwind, featuring a clean login/signup modal and a slide‑over bookshelf.
