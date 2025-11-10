@@ -2,7 +2,7 @@
 
 import { useEffect, useRef } from "react";
 import { X } from "lucide-react";
-import { login, signup } from "../login/actions";
+import AuthCard from "@/app/login/AuthCard";
 
 export default function Modal({ closeModal }) {
   const dialogRef = useRef(null);
@@ -55,7 +55,7 @@ export default function Modal({ closeModal }) {
     >
       <div
         ref={dialogRef}
-        className="relative w-[min(92vw,36rem)] max-h-[85vh] overflow-y-auto rounded-2xl bg-[#F4F3ED] p-6 shadow-xl ring-1 ring-black/5"
+        className="relative"
         onClick={(e) => e.stopPropagation()}
         onKeyDown={trapFocus}
       >
@@ -66,57 +66,11 @@ export default function Modal({ closeModal }) {
         >
           <X size={18} />
         </button>
-
-        <h2 id="auth-modal-title" className="text-2xl font-semibold text-[#3B332B] pr-8">
-          Welcome back
-        </h2>
-        <p className="mt-1 text-[#3B332B]/70">Log in or create an account.</p>
-
-        <form className="mt-6 space-y-4">
-          <div>
-            <label htmlFor="email" className="block text-sm font-medium text-[#3B332B]">
-              Email
-            </label>
-            <input
-              ref={firstFieldRef}
-              id="email"
-              name="email"
-              type="email"
-              required
-              className="mt-1 w-full rounded-lg border border-[#E7E2DD] bg-white px-4 py-3 text-[#3B332B] placeholder:text-[#3B332B]/60 focus:outline-none focus:ring-2 focus:ring-[#81A282]"
-              placeholder="you@example.com"
-            />
-          </div>
-
-          <div>
-            <label htmlFor="password" className="block text-sm font-medium text-[#3B332B]">
-              Password
-            </label>
-            <input
-              id="password"
-              name="password"
-              type="password"
-              required
-              className="mt-1 w-full rounded-lg border border-[#E7E2DD] bg-white px-4 py-3 text-[#3B332B] placeholder:text-[#3B332B]/60 focus:outline-none focus:ring-2 focus:ring-[#81A282]"
-              placeholder="••••••••"
-            />
-          </div>
-
-          <div className="mt-6 flex flex-col gap-3 sm:flex-row">
-            <button
-              className="bg-[#493F37] text-[#F9F8F6] rounded-lg px-5 py-3 shadow-sm hover:bg-[#3B332B] focus-visible:outline focus-visible:outline-2 focus-visible:outline-[#81A282]"
-              formAction={login}
-            >
-              Log in
-            </button>
-            <button
-              className="bg-white text-[#493F37] border border-[#E7E2DD] rounded-lg px-5 py-3 shadow-sm hover:bg-[#F9F8F6] focus-visible:outline focus-visible:outline-2 focus-visible:outline-[#81A282]"
-              formAction={signup}
-            >
-              Sign up
-            </button>
-          </div>
-        </form>
+        <AuthCard
+          className="w-[min(92vw,36rem)] max-h-[85vh] overflow-y-auto pt-10"
+          emailFieldRef={firstFieldRef}
+          headingId="auth-modal-title"
+        />
       </div>
     </div>
   );
